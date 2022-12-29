@@ -1,13 +1,12 @@
-package com.alammar.zuulservice;
+package com.alammar.gatewayservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ZuulServiceApplication {
+public class GatewayServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ZuulServiceApplication.class, args);
+		SpringApplication.run(GatewayServiceApplication.class, args);
 	}
-
 }

@@ -1,5 +1,12 @@
 spring:
   application:
-    name: zuul-service
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/**
 server:
-  port: 0
+  port: 9999

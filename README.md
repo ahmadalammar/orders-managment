@@ -16,4 +16,6 @@ This is just a show case on how to use apache camel with saga in microservices.
   `cd narayana-lra-coordinator`
   `java -Dquarkus.http.port=50000 -jar target/quarkus-app/quarkus-run.jar`
 
-* Run simple API test by calling `http://localhost:9988/api/order`
+* Run `discovery-server`, `customer-service`, `gateway-service`, `order-service`
+
+* Run simple API test by calling `http://localhost:9999/api/order`
