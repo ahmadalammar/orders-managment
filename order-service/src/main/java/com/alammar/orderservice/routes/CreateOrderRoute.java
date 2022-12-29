@@ -1,36 +1,29 @@
 package com.alammar.orderservice.routes;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.jackson.JacksonDataFormat;
+import org.apache.camel.model.SagaCompletionMode;
 import org.springframework.stereotype.Component;
 
-import java.util.Timer;
-
+@Slf4j
 @Component
 public class CreateOrderRoute extends RouteBuilder {
-    JacksonDataFormat jsonDataFormat = new JacksonDataFormat(Timer.class);
 
     @Override
     public void configure() throws Exception {
-        rest("/say")
-                .get("/hello").to("direct:hello")
-                .get("/bye").consumes("application/json").to("direct:bye")
-                .post("/bye").to("mock:update");
 
-        from("direct:hello")
-                .transform().constant("Hello World");
+        from("kafka:createOrder?brokers=localhost:9092")
+                .log("Order Received ${body}")
+                .saga()
+                .completionMode(SagaCompletionMode.MANUAL)
+                .compensation("direct:cancelOrder")
+                .completion("direct:completeOrder")
+                .to("kafka:processOrder?brokers=localhost:9092");
 
-        from("direct:bye")
-                .transform().constant("Bye World");
-    }
+        from("direct:completeOrder")
+                .log("Order ${body} Completed Successfully!");
 
-    public class TimerProcessor implements Processor {
-        public void process(Exchange exchange) throws Exception {
-            String id = exchange.getIn().getBody(String.class);
-            Timer t = new Timer(id);
-            exchange.getIn().setBody(t);
-        }
+        from("direct:cancelOrder")
+                .log("Order ${body} Canceled");
     }
 }

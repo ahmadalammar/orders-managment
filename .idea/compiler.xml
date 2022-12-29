@@ -8,17 +8,20 @@
         <outputRelativeToContentRoot value="true" />
         <module name="order-service" />
         <module name="discovery-server" />
+        <module name="narayana-lra-coordinator" />
         <module name="customer-service" />
         <module name="gateway-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="customer-service" target="1.5" />
+      <module name="customer-service" target="17" />
       <module name="discovery-server" target="17" />
       <module name="gateway-service" target="17" />
       <module name="Inventory-service" target="17" />
+      <module name="narayana-lra-coordinator" target="11" />
       <module name="order-service" target="17" />
       <module name="product-service" target="17" />
+      <module name="testssss" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -27,8 +30,10 @@
       <module name="customer-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
+      <module name="narayana-lra-coordinator" options="-parameters" />
       <module name="order-service" options="-parameters" />
       <module name="product-service" options="-parameters" />
+      <module name="testssss" options="-parameters" />
     </option>
   </component>
 </project>
