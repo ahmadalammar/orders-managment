@@ -32,7 +32,7 @@ public class ReserveCreditsRoute extends RouteBuilder {
                     @Override
                     public void process(Exchange exchange) throws Exception {
                         log.info("Processing reserve Credits....");
-                        throw new IllegalStateException("Error reserving credits!");
+                        //throw new IllegalStateException("Error reserving credits!");
                     }
                 })
                 .log("Credit ${body} reserved in action ${body}");
