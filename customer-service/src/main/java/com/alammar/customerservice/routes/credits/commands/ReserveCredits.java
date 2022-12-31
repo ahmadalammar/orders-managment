@@ -1,4 +1,4 @@
-package com.alammar.customerservice.routes;
+package com.alammar.customerservice.routes.credits.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ReserveCreditsRoute extends RouteBuilder {
+public class ReserveCredits extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
@@ -17,17 +17,12 @@ public class ReserveCreditsRoute extends RouteBuilder {
         onException()
                 .log("UnExpected Exception on Reserve Credits : ${body}")
                 .log("Proceed to compensate")
-                .to("saga:compensate");
-
-        onCompletion()
-                .onCompleteOnly()
-                .log("Reserved Credit Successfully!, Processed to complete the order!")
-                .to("saga:complete");
+                .to("kafka:cancelOrder?brokers=localhost:9092");
 
         from("kafka:reserveCredits?brokers=localhost:9092")
                 .saga()
                 .propagation(SagaPropagation.MANDATORY)
-                .compensation("direct:refundCredit")
+                .compensation("direct:refundCredits")
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
@@ -35,9 +30,12 @@ public class ReserveCreditsRoute extends RouteBuilder {
                         //throw new IllegalStateException("Error reserving credits!");
                     }
                 })
-                .log("Credit ${body} reserved in action ${body}");
+                .log("Credits ${body} reserved")
+                .to("kafka:creditsReserved?brokers=localhost:9092")
+                .to("kafka:completeOrder?brokers=localhost:9092");
 
-        from("direct:refundCredit")
+        from("direct:refundCredits")
+                .to("kafka:creditsRefunded?brokers=localhost:9092")
                 .log("Credits ${body} refunded successfully!");
     }
 }

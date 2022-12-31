@@ -1,4 +1,4 @@
-package com.alammar.orderservice.routes;
+package com.alammar.orderservice.routes.order.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ProcessOrderRoute extends RouteBuilder {
+public class ProcessOrder extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
@@ -17,7 +17,7 @@ public class ProcessOrderRoute extends RouteBuilder {
         onException()
                 .log("UnExpected Exception Happened on Processing Order : ${body}")
                 .log("Proceed to compensate")
-                .to("saga:compensate");
+                .to("kafka:cancelOrder?brokers=localhost:9092");
 
         from("kafka:processOrder?brokers=localhost:9092")
                 .saga()
@@ -29,7 +29,7 @@ public class ProcessOrderRoute extends RouteBuilder {
                         log.info("Processing orderId: " + exchange.getIn().getBody());
                     }
                 })
-                .log("Process Order ${body} Completed!")
+                .to("kafka:orderProcessed?brokers=localhost:9092")
                 .to("kafka:reserveCredits?brokers=localhost:9092");
 
         from("direct:cancelProcessOrder")
@@ -37,9 +37,11 @@ public class ProcessOrderRoute extends RouteBuilder {
                     @Override
                     public void process(Exchange exchange) throws Exception {
                         log.info("Cancelling Processing OrderId: " + exchange.getIn().getBody());
+                        //Thread.sleep(3000);
                         //throw new IllegalStateException("Error Canceling process order!!!!!");
                     }
                 })
+                .to("kafka:orderProcessCancelled?brokers=localhost:9092")
                 .log("Process Order ${body} cancelled successfully!");
     }
 }

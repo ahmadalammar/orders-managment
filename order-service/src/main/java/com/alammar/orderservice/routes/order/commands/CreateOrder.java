@@ -1,4 +1,4 @@
-package com.alammar.orderservice.routes;
+package com.alammar.orderservice.routes.order.commands;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.builder.RouteBuilder;
@@ -7,23 +7,15 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class CreateOrderRoute extends RouteBuilder {
+public class CreateOrder extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-
         from("kafka:createOrder?brokers=localhost:9092")
                 .log("Order Received ${body}")
                 .saga()
                 .completionMode(SagaCompletionMode.MANUAL)
-                .compensation("direct:cancelOrder")
-                .completion("direct:completeOrder")
+                .to("kafka:orderCreated?brokers=localhost:9092")
                 .to("kafka:processOrder?brokers=localhost:9092");
-
-        from("direct:completeOrder")
-                .log("Order ${body} Completed Successfully!");
-
-        from("direct:cancelOrder")
-                .log("Order ${body} Canceled");
     }
 }
