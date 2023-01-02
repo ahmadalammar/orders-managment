@@ -1,13 +1,11 @@
 package com.alammar.orderservice;
 
-import org.apache.camel.CamelContext;
-import org.apache.camel.ProducerTemplate;
-import org.apache.camel.impl.engine.DefaultProducerTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
+@EnableDiscoveryClient
 @SpringBootApplication
 public class OrderServiceApplication implements CommandLineRunner {
 
@@ -19,7 +17,6 @@ public class OrderServiceApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
 
     }
 }

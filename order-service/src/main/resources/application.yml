@@ -1,9 +1,12 @@
 spring:
   application:
     name: order-service
+  cloud:
+    refresh:
+      enabled: false
 
 server:
-  port: 0
+  port: 9902
   undertow:
     port: 8001
 

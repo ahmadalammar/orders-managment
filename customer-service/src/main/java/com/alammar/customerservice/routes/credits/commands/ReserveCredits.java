@@ -25,7 +25,7 @@ public class ReserveCredits extends RouteBuilder {
                 .log("Proceed to compensate")
                 .to("kafka:cancelOrder?brokers=localhost:9092");
 
-        from("kafka:reserveCredits?brokers=localhost:9092")
+        from("kafka:reserveCredits?brokers=localhost:9092&maxPollIntervalMs=3000")
                 .saga()
                 .propagation(SagaPropagation.MANDATORY)
                 .compensation("direct:refundCredits")

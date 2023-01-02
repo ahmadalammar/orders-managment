@@ -1,9 +1,12 @@
 spring:
   application:
     name: customer-service
+  cloud:
+    refresh:
+      enabled: false
 
 server:
-  port: 0
+  port: 9901
   undertow:
     port: 8002
 

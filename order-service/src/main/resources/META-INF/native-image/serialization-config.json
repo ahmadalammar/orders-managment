@@ -1,0 +1,16 @@
+{
+  "types":[
+    {
+      "name":"com.netflix.appinfo.ApplicationInfoManager$$SpringCGLIB$$0",
+      "customTargetConstructorClass":"java.lang.Object"
+    },
+    {
+      "name":"org.springframework.cloud.netflix.eureka.serviceregistry.EurekaRegistration$$SpringCGLIB$$0",
+      "customTargetConstructorClass":"java.lang.Object"
+    }
+  ],
+  "lambdaCapturingTypes":[
+  ],
+  "proxies":[
+  ]
+}
