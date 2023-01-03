@@ -19,3 +19,6 @@ This is just a show case on how to use apache camel with saga in microservices.
 * Run `discovery-server`, `customer-service`, `gateway-service`, `order-service`
 
 * Run simple API test by calling `http://localhost:9999/api/order`
+
+## System flow
+![system-flow](https://user-images.githubusercontent.com/17546520/210304592-0ef89761-0b04-4146-ae5e-b976e1b4f7de.png)
