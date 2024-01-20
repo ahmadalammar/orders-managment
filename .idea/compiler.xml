@@ -7,8 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="narayana-lra-coordinator" />
-        <module name="discovery-server" />
         <module name="order-service" />
+        <module name="discovery-server" />
         <module name="customer-service" />
         <module name="gateway-service" />
       </profile>
